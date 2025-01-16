@@ -258,6 +258,50 @@ const handleRefresh = () => {
   cooldownEndTime.value = Date.now() + 600000 // 10분
   updateRemainingTime()
 }
+
+//유튜브
+const youtubeVideos = ref([
+  {
+    title: `${selectedGame.value?.name} 게임플레이 영상`,
+    thumbnail: `/api/placeholder/400/225`, // 실제로는 유튜브 썸네일 URL
+    channel: "Game Channel 1"
+  },
+  {
+    title: `${selectedGame.value?.name} 리뷰`,
+    thumbnail: `/api/placeholder/400/225`,
+    channel: "Game Review"
+  },
+  {
+    title: `${selectedGame.value?.name} 공략`,
+    thumbnail: `/api/placeholder/400/225`,
+    channel: "Game Tips"
+  },
+  {
+    title: `${selectedGame.value?.name} 하이라이트`,
+    thumbnail: `/api/placeholder/400/225`,
+    channel: "Game Highlights"
+  },
+  {
+    title: `${selectedGame.value?.name} 신규 업데이트`,
+    thumbnail: `/api/placeholder/400/225`,
+    channel: "Game News"
+  },
+  {
+    title: `${selectedGame.value?.name} 멀티플레이`,
+    thumbnail: `/api/placeholder/400/225`,
+    channel: "Multiplayer Gaming"
+  },
+  {
+    title: `${selectedGame.value?.name} 속도런`,
+    thumbnail: `/api/placeholder/400/225`,
+    channel: "Speedrun Community"
+  },
+  {
+    title: `${selectedGame.value?.name} 비하인드`,
+    thumbnail: `/api/placeholder/400/225`,
+    channel: "Game Stories"
+  }
+])
 </script>
 
 <template>
@@ -290,7 +334,7 @@ const handleRefresh = () => {
     <!-- Content -->
     <div class="relative z-10">
       <!-- Login Section -->
-      <div v-if="!isLoggedIn" class="fixed inset-0 flex items-center justify-center z-50">
+      <div v-if="isLoggedIn" class="fixed inset-0 flex items-center justify-center z-50">
         <div class="text-center px-4">
           <h1 class="text-5xl font-bold text-white tracking-wider mb-8">
             Game Library
@@ -425,8 +469,12 @@ const handleRefresh = () => {
         </div>
 
         <!-- Game Detail Modal -->
-        <div v-if="selectedGame" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80">
-          <div class="relative w-full max-w-4xl bg-[#181818] rounded-lg shadow-xl overflow-hidden">
+          <div v-if="selectedGame"
+               class="fixed inset-0 z-50 flex items-center justify-center bg-black/80"
+               @click="closeGameDetail">
+          <!-- Modal (이벤트 전파 중지) -->
+          <div class="relative w-full max-w-4xl bg-[#181818] rounded-lg shadow-xl max-h-[90vh] overflow-y-auto"
+               @click.stop>
             <!-- Close Button -->
             <button
                 @click="closeGameDetail"
@@ -462,22 +510,60 @@ const handleRefresh = () => {
 
               <p class="text-gray-300 text-lg mb-6">{{ selectedGame.detailed_description }}</p>
 
-              <div class="grid grid-cols-2 gap-6">
+              <div class="grid grid-cols-2 gap-6 mb-12">
                 <div>
                   <h3 class="text-lg font-semibold text-white mb-2">장르</h3>
                   <div class="flex flex-wrap gap-2">
-             <span
-                 v-for="genre in selectedGame.genres"
-                 :key="genre.id"
-                 class="px-3 py-1 bg-white/10 rounded-full text-sm text-gray-300"
-             >
-               {{ genre.description }}
-             </span>
+              <span
+                  v-for="genre in selectedGame.genres"
+                  :key="genre.id"
+                  class="px-3 py-1 bg-white/10 rounded-full text-sm text-gray-300"
+              >
+                {{ genre.description }}
+              </span>
                   </div>
                 </div>
                 <div>
                   <h3 class="text-lg font-semibold text-white mb-2">개발사</h3>
                   <p class="text-gray-300">{{ selectedGame.developers?.join(', ') || 'N/A' }}</p>
+                </div>
+              </div>
+
+              <!-- YouTube Videos Section -->
+              <div class="border-t border-white/20 pt-8">
+                <h3 class="text-2xl font-semibold text-white mb-6">관련 동영상</h3>
+                <div class="grid grid-cols-2 gap-6">
+                  <div v-for="(video, index) in youtubeVideos" :key="index"
+                       class="relative overflow-hidden rounded-lg group cursor-pointer">
+                    <div class="aspect-video relative">
+                      <img
+                          :src="video.thumbnail"
+                          :alt="video.title"
+                          class="w-full h-full object-cover"
+                      >
+                      <div class="absolute inset-0 flex items-center justify-center
+                            bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             class="h-12 w-12 text-white"
+                             fill="none"
+                             viewBox="0 0 24 24"
+                             stroke="currentColor">
+                          <path stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                          <path stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                      </div>
+                    </div>
+                    <div class="p-3">
+                      <h4 class="text-white font-medium line-clamp-2 text-sm">{{ video.title }}</h4>
+                      <p class="text-gray-400 text-xs mt-1">{{ video.channel }}</p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -558,6 +644,9 @@ const handleRefresh = () => {
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+.aspect-video {
+  aspect-ratio: 16 / 9;
+}
 
 @tailwind base;
 @tailwind components;
