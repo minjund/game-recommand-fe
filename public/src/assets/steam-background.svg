@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080">
+  <!-- 어두운 배경 -->
+  <rect width="100%" height="100%" fill="#141414"/>
+  
+  <!-- 추상적인 기하학적 패턴 -->
+  <g opacity="0.1">
+    <path d="M0 200 L1920 600" stroke="#666" stroke-width="2"/>
+    <path d="M0 400 L1920 800" stroke="#666" stroke-width="2"/>
+    <path d="M0 600 L1920 1000" stroke="#666" stroke-width="2"/>
+  </g>
+  
+  <!-- 스팀 로고 형태의 추상적 요소들 -->
+  <g opacity="0.15">
+    <circle cx="960" cy="540" r="400" fill="none" stroke="#4488ff" stroke-width="2"/>
+    <circle cx="960" cy="540" r="300" fill="none" stroke="#4488ff" stroke-width="2"/>
+    <circle cx="960" cy="540" r="200" fill="none" stroke="#4488ff" stroke-width="2"/>
+  </g>
+  
+  <!-- 동적인 느낌을 주는 그라데이션 -->
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#4488ff" stop-opacity="0.1"/>
+      <stop offset="100%" stop-color="#141414" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <circle cx="960" cy="540" r="500" fill="url(#glow)"/>
+  
+  <!-- 추가적인 디테일 -->
+  <g opacity="0.05">
+    <rect x="100" y="100" width="300" height="2" fill="#fff"/>
+    <rect x="1520" y="900" width="300" height="2" fill="#fff"/>
+    <rect x="200" y="800" width="200" height="2" fill="#fff"/>
+    <rect x="1420" y="200" width="200" height="2" fill="#fff"/>
+  </g>
+  
+  <!-- 파티클 효과 -->
+  <g opacity="0.2">
+    <circle cx="300" cy="200" r="1" fill="#fff"/>
+    <circle cx="500" cy="400" r="1" fill="#fff"/>
+    <circle cx="700" cy="600" r="1" fill="#fff"/>
+    <circle cx="900" cy="800" r="1" fill="#fff"/>
+    <circle cx="1100" cy="200" r="1" fill="#fff"/>
+    <circle cx="1300" cy="400" r="1" fill="#fff"/>
+    <circle cx="1500" cy="600" r="1" fill="#fff"/>
+    <circle cx="1700" cy="800" r="1" fill="#fff"/>
+  </g>
+  
+  <!-- 오버레이 그라데이션 -->
+  <rect width="100%" height="100%" fill="url(#overlay)"/>
+  <defs>
+    <linearGradient id="overlay" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#141414" stop-opacity="0.7"/>
+      <stop offset="50%" stop-color="#141414" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#141414" stop-opacity="0.8"/>
+    </linearGradient>
+  </defs>
+</svg>
