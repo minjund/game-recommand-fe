@@ -11,7 +11,6 @@
           class="absolute top-4 right-4"
           @click="$emit('close')"
       />
-
       <!-- Game Header -->
       <div class="relative h-96">
         <game-thumbnail
@@ -63,7 +62,7 @@
         </div>
 
         <!-- YouTube Videos Section -->
-          <video-grid :videos="videos" />
+<!--          <video-grid :videos="videos" />-->
       </div>
     </div>
   </div>

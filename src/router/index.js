@@ -28,12 +28,6 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
     const authStore = useAuthStore()
 
-    // Steam 인증 리턴 페이지는 항상 허용
-    if (to.name === 'steam-return') {
-        next()
-        return
-    }
-
     if (to.matched.some(record => record.meta.requiresAuth)) {
         if (!authStore.isLoggedIn) {
             next({ name: 'login' })

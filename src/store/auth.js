@@ -15,12 +15,6 @@ export const useAuthStore = defineStore('auth', {
 
         },
 
-        logout() {
-            this.isLoggedIn = false
-            this.steamId = null
-            this.user = null
-        },
-
         setUser(userData) {
             this.user = userData
         }
