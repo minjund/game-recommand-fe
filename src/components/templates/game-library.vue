@@ -151,7 +151,7 @@ const handleRefresh = () => {
 
   shuffled.forEach((game, index) => {
     setTimeout(() => {
-      flippedCards.value.add(game.appid)
+      flippedCards.value.add(game.steam_appid)
     }, index * 300)
   })
 
@@ -188,10 +188,11 @@ onMounted(async () => {
     })
 
     displayedGames.value = games.value.slice(0, 8)
+
     // 카드 플립 애니메이션
     displayedGames.value.forEach((game, index) => {
       setTimeout(() => {
-        flippedCards.value.add(game.appid)
+        flippedCards.value.add(game.steam_appid)
       }, index * 300)
     })
   } catch (error) {
