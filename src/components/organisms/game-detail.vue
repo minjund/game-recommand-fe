@@ -34,7 +34,7 @@
           </a>
         </title-text>
 
-        <div class="flex gap-4 mb-6">
+        <div class="flex flex-wrap gap-4 mb-6">
           <div class="px-4 py-2 bg-white/10 rounded-md">
             <span class="text-sm text-gray-300">
               릴리즈: {{ game.release_date?.date || 'N/A' }}
@@ -55,30 +55,25 @@
               <external-link-icon />
             </a>
           </div>
+        </div>
+        <!-- 장르 컨테이너 -->
+        <div class="flex flex-wrap gap-2 mb-6">
           <div v-for="genre in game.genres"
                :key="genre.id"
-               class="px-4 py-2 bg-white/10 rounded-md">
-              <span class="text-sm text-gray-300">
-                  {{ genre.description }}
-              </span>
+               class="inline-flex px-4 py-2 bg-white/10 rounded-md">
+                <span class="text-sm text-gray-300">
+                    {{ genre.description }}
+                </span>
           </div>
         </div>
 
-<!--        <description-text class="text-lg mb-6">-->
-<!--          {{ game.short_description }}-->
-<!--        </description-text>-->
-
-        <steam-detail-description-text class="text-lg mb-6" :content="game.detailed_description"></steam-detail-description-text>
-
-        <div class="grid grid-cols-2 gap-6 mb-12">
-          <div>
-            <h3 class="text-lg font-semibold text-white mb-2">개발사</h3>
-            <p class="text-gray-300">{{ game.developers?.join(', ') || 'N/A' }}</p>
-          </div>
+        <!-- 리뷰 섹션 추가 -->
+        <div class="mb-6">
+          <h3 class="text-xl font-semibold text-white mb-4">유저 리뷰</h3>
+          <game-reivew-card :app-id="game.steam_appid" />
         </div>
-
         <!-- YouTube Videos Section -->
-<!--          <video-grid :videos="videos" />-->
+        <!--          <video-grid :videos="videos" />-->
       </div>
     </div>
   </div>
@@ -89,7 +84,8 @@ import CloseButton from '@/components/atoms/button/close-button.vue'
 import GameThumbnail from '@/components/atoms/image/game-thumbnail.vue'
 import TitleText from '@/components/atoms/text/title-text.vue'
 import ExternalLinkIcon from "@/components/atoms/icon/external-link-icon.vue";
-import SteamDetailDescriptionText from "@/components/atoms/text/steam-detail-description-text.vue";
+import GameReivewCard from "@/components/molecules/game-reivew-card.vue";
+
 
 defineProps({
   game: {
