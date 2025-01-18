@@ -12,6 +12,12 @@
               @refresh="handleRefresh"
           />
 
+          <!-- 로딩 상태 -->
+          <div v-if="isLoading" class="flex flex-col items-center justify-center mt-12 gap-4">
+            <div class="w-12 h-12 border-4 border-gray-600 border-t-white rounded-full animate-spin"></div>
+            <p class="text-gray-300 text-lg">당신에게 어울리는 게임 찾는 중...</p>
+          </div>
+
           <game-grid
               :games="displayedGames"
               :flipped-cards="flippedCards"
@@ -62,6 +68,7 @@ const displayedGames = ref([])
 const flippedCards = ref(new Set())
 const currentPhrase = ref(getRandomPhrase())
 const games = ref([])
+const isLoading = ref(true)
 
 // Refresh cooldown state
 const isRefreshCooldown = ref(false)
@@ -187,6 +194,7 @@ onMounted(async () => {
       return item
     })
 
+    console.log('Fetched games:', games.value)
     displayedGames.value = games.value.slice(0, 8)
 
     // 카드 플립 애니메이션
@@ -197,6 +205,8 @@ onMounted(async () => {
     })
   } catch (error) {
     console.error('Failed to fetch games:', error)
+  } finally {
+    isLoading.value = false // 로딩 완료
   }
 })
 </script>
