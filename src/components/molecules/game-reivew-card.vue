@@ -1,38 +1,113 @@
 <template>
-  <div class="grid grid-cols-3 gap-6 max-h-96 overflow-y-auto pr-2">
-    <div v-for="(review, index) in reviews"
-         :key="index"
-         class="group p-6 bg-white/5 rounded-lg cursor-pointer transition-all duration-200 hover:bg-white/10 hover:scale-[1.02] hover:shadow-lg"
-         @click="openReviewModal(review)">
-      <div class="relative min-h-[5rem]">
-        <p class="text-gray-300 text-sm leading-loose line-clamp-3">
-          {{ formatReview(review) }}
-          <span v-if="review.length > 100"
-                class="inline-block text-gray-400 text-xs group-hover:underline">
-            ...더보기
-          </span>
-        </p>
-      </div>
-    </div>
+  <div class="h-[calc(90vh-20rem)] relative group">
+    <swiper
+        :slides-per-view="2"
+        :slides-per-group="2"
+        :grid="{
+          rows: 2,
+          fill: 'row'
+        }"
+        :space-between="20"
+        :modules="[Grid, Navigation]"
+        :navigation="{
+          nextEl: '.swiper-button-next-custom',
+          prevEl: '.swiper-button-prev-custom',
+          lockClass: 'swiper-button-lock',
+          disabledClass: 'swiper-button-disabled'
+        }"
+        class="review-swiper"
+    >
+      <swiper-slide v-for="review in reviews" :key="review.recommendationid">
+        <!-- 리뷰 카드 컨테이너 -->
+        <div class="flex group cursor-pointer h-full" @click="openReviewModal(review)">
+          <div class="flex-1">
+            <!-- 리뷰 카드 -->
+            <div class="relative bg-[#2a2f3a] rounded-2xl p-4 transition-colors duration-200 hover:bg-[#32384a] h-full">
+              <!-- 상단 메타 정보 -->
+              <div class="flex justify-between items-center mb-2">
+                <!-- 추천/비추천 뱃지 -->
+                <div class="text-xs px-2 py-1 rounded-full"
+                     :class="review.voted_up ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'">
+                  {{ review.voted_up ? '추천' : '비추천' }}
+                </div>
+                <!-- 작성 시간 -->
+                <span class="text-xs text-gray-400">
+                  {{ formatDate(review.timestamp_created) }}
+                </span>
+              </div>
+
+              <!-- 리뷰 내용 -->
+              <div class="text-gray-300 text-sm leading-relaxed">
+                <template v-if="isExpanded || review?.review?.length <= 90">
+                  <p>{{ formatReview(review?.review) }}</p>
+                </template>
+                <template v-else>
+                  <p>
+                    {{ formatReview(review?.review?.slice(0, 90)) }}
+                    <button
+                        @click.stop="isExpanded = true"
+                        class="inline-block text-blue-400 text-xs hover:underline ml-1"
+                    >
+                      더보기
+                    </button>
+                  </p>
+                </template>
+              </div>
+            </div>
+          </div>
+        </div>
+      </swiper-slide>
+    </swiper>
+
+    <!-- Custom Navigation Buttons -->
+    <button class="swiper-button-prev-custom absolute left-0 top-1/2 -translate-y-1/2 z-10 p-2 transition-all duration-200 opacity-0 group-hover:opacity-100 focus:outline-none">
+      <svg width="32" height="32" viewBox="0 0 24 24" class="text-white hover:text-blue-400 transition-colors">
+        <path d="M12.707 17.293L8.414 13H18v-2H8.414l4.293-4.293-1.414-1.414L4.586 12l6.707 6.707z" fill="currentColor"/>
+      </svg>
+    </button>
+    <button class="swiper-button-next-custom absolute right-0 top-1/2 -translate-y-1/2 z-10 p-2 transition-all duration-200 opacity-0 group-hover:opacity-100 focus:outline-none">
+      <svg width="32" height="32" viewBox="0 0 24 24" class="text-white hover:text-blue-400 transition-colors">
+        <path d="M11.293 17.293l1.414 1.414L19.414 12l-6.707-6.707-1.414 1.414L15.586 11H6v2h9.586z" fill="currentColor"/>
+      </svg>
+    </button>
   </div>
 
   <!-- Review Modal -->
   <div v-if="selectedReview"
        class="fixed inset-0 z-[60] flex items-center justify-center bg-black/50"
        @click="closeReviewModal">
-    <div class="relative w-full max-w-lg bg-[#181818] rounded-lg shadow-xl p-8"
+    <div class="relative w-full max-w-2xl bg-[#181818] rounded-lg shadow-xl max-h-[90vh] flex flex-col"
          @click.stop>
-      <button
-          class="absolute top-6 right-6 text-gray-400 hover:text-white"
-          @click="closeReviewModal">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-        </svg>
-      </button>
-      <div class="mt-2">
-        <p class="text-gray-300 text-base leading-loose tracking-wide whitespace-pre-line">
-          {{ formatReview(selectedReview) }}
-        </p>
+      <!-- 모달 헤더 -->
+      <div class="flex justify-between items-center p-4 border-b border-gray-700">
+        <h3 class="text-lg font-medium text-gray-200">리뷰 상세</h3>
+        <button
+            class="text-gray-400 hover:text-white focus:outline-none"
+            @click="closeReviewModal">
+          <XIcon class="w-6 h-6" />
+        </button>
+      </div>
+
+      <!-- 모달 컨텐츠 -->
+      <div class="p-6 overflow-y-auto">
+        <div class="flex-1">
+          <div class="relative bg-[#2a2f3a] rounded-2xl p-6">
+            <!-- 상단 메타 정보 -->
+            <div class="flex justify-between items-center mb-4">
+              <div class="text-sm px-3 py-1 rounded-full"
+                   :class="selectedReview.voted_up ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'">
+                {{ selectedReview.voted_up ? '추천' : '비추천' }}
+              </div>
+              <span class="text-sm text-gray-400">
+                {{ formatDate(selectedReview.timestamp_created) }}
+              </span>
+            </div>
+
+            <p class="text-gray-200 text-base leading-relaxed whitespace-pre-line">
+              {{ formatReview(selectedReview?.review) }}
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -40,6 +115,11 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
+import { Swiper, SwiperSlide } from 'swiper/vue';
+import { Grid, Navigation } from 'swiper/modules';
+import { X as XIcon } from 'lucide-vue-next';
+import 'swiper/css';
+import 'swiper/css/grid';
 
 const props = defineProps({
   appId: {
@@ -52,9 +132,18 @@ const reviews = ref([]);
 const selectedReview = ref(null);
 
 const formatReview = (review) => {
-  if (!review) return '';
-  // \n을 \n\n으로 변경하여 줄바꿈을 두 번씩 적용
-  return review.replace(/\\n/g, '\n\n');
+  if (!review || typeof review !== 'string') return '';
+  return review.replace(/\\n/g, '\n\n').replace(/\\r/g, '');
+};
+
+const formatDate = (timestamp) => {
+  if (!timestamp) return '';
+  const date = new Date(timestamp * 1000);
+  return new Intl.DateTimeFormat('ko-KR', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit'
+  }).format(date);
 };
 
 const openReviewModal = (review) => {
@@ -86,5 +175,27 @@ onMounted(() => {
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+
+.review-swiper {
+  width: 100%;
+  height: 100%;
+  padding: 1rem;
+}
+
+.review-swiper .swiper-slide {
+  height: auto;
+}
+
+/* 기본 네비게이션 버튼 숨김 */
+:deep(.swiper-button-next),
+:deep(.swiper-button-prev) {
+  display: none;
+}
+
+/* 커스텀 네비게이션 비활성화 상태 */
+.swiper-button-disabled,
+.swiper-button-lock {
+  display: none !important;
 }
 </style>
