@@ -118,6 +118,8 @@ import { ref, onMounted } from 'vue';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { Grid, Navigation } from 'swiper/modules';
 import { X as XIcon } from 'lucide-vue-next';
+import { API_BASE_URL } from '@/constants';
+
 import 'swiper/css';
 import 'swiper/css/grid';
 
@@ -156,7 +158,7 @@ const closeReviewModal = () => {
 
 const fetchReviews = async () => {
   try {
-    const response = await fetch(`http://localhost:8084/api/v1/review?appId=${props.appId}`);
+    const response = await fetch(`${API_BASE_URL}/api/v1/review?appId=${props.appId}`);
     const data = await response.json();
     reviews.value = data.arrayResponse;
   } catch (error) {

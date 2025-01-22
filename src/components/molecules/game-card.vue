@@ -22,8 +22,8 @@
             <title-text>{{ game.name }}</title-text>
             <description-text>{{ game.short_description }}</description-text>
             <div class="flex gap-2 mt-2">
-              <play-button />
-              <add-button />
+<!--              <play-button />-->
+<!--              <add-button />-->
             </div>
           </div>
         </div>

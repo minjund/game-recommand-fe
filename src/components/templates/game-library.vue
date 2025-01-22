@@ -53,10 +53,7 @@ const authStore = useAuthStore()
 const getRandomPhrase = () => {
   const phrases = [
     "오늘은 이 게임 어때요?",
-    "당신을 위한 게임 컬렉션",
-    "놓치지 말아야 할 게임",
-    "인기 급상승 게임",
-    "지금 주목받는 게임"
+    "당신을 위한 게임 목록"
   ]
   return phrases[Math.floor(Math.random() * phrases.length)]
 }
@@ -193,8 +190,6 @@ onMounted(async () => {
       }
       return item
     })
-
-    console.log('Fetched games:', games.value)
     displayedGames.value = games.value.slice(0, 8)
 
     // 카드 플립 애니메이션
