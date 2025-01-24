@@ -158,7 +158,7 @@ const closeReviewModal = () => {
 
 const fetchReviews = async () => {
   try {
-    const response = await fetch(`${API_BASE_URL}/api/v1/review?appId=${props.appId}`);
+    const response = await fetch(`${API_BASE_URL}/review?appId=${props.appId}`);
     const data = await response.json();
     reviews.value = data.arrayResponse;
   } catch (error) {
