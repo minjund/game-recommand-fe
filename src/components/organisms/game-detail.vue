@@ -42,7 +42,7 @@
           </div>
           <div class="px-4 py-2 bg-white/10 rounded-md">
             <span class="text-sm text-gray-300">
-              가격: {{ game.is_free ? '무료' : game.price_overview.final_formatted }}
+              가격: {{ game.is_free ? '무료' : game.price_overview.final }}
             </span>
           </div>
           <div v-if="game.metacritic" class="px-4 py-2 bg-white/10 rounded-md">
