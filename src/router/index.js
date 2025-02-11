@@ -5,18 +5,18 @@ const routes = [
     {
         path: '/',
         name: 'home',
-        component: () => import('@/components/templates/game-library.vue'),
+        component: () => import('@/components/pages/game-library.vue'),
         meta: { requiresAuth: true }
     },
     {
         path: '/login',
         name: 'login',
-        component: () => import('@/components/templates/login-page.vue')
+        component: () => import('@/components/pages/login-page.vue')
     },
     {
         path: '/auth/steam/return',
         name: 'steam-return',
-        component: () => import('@/components/templates/steam-return.vue')
+        component: () => import('@/components/pages/steam-return.vue')
     }
 ]
 
